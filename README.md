@@ -33,7 +33,7 @@ For more information, you can read how to [format your machine and reinstall mac
 Clone the repository
 
 ```
-git clone https://github.com/jsstrn/dotfiles.git ~/.dotfiles
+git clone https://github.com/51f0x/dotfiles.git ~/.dotfiles
 ```
 
 Change into the directory
