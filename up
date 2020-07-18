@@ -1,0 +1,106 @@
+#!/bin/bash
+
+function display {
+	echo -e "\n$1\n"
+}
+
+function createDirectories {
+	display '📂  Creating directories'
+	.scripts/dir.sh
+}
+
+function installApps {
+	display '🎱  Installing applications'
+	.scripts/install.sh
+}
+
+function installNpm {
+	display '📦  Installing npm packages globally'
+	.scripts/install-npm.sh
+}
+
+function installCustomApps {
+	display '🤔  Installing custom applications'
+	.scripts/install-apps.sh
+}
+
+function setupMacOsPref {
+	display '🔧  Tweaking macOS preferences'
+	.scripts/macos.sh
+}
+
+function loginItems {
+	display '✨  Configure login items'
+	.scripts/login-items.sh
+}
+
+function stowFiles {
+	display '🗄  Stowing your .files to $HOME'
+	ls -d */ | xargs stow -vv
+}
+
+function applyGitIgnore {
+	display '🙅  Applying ~/.gitignore globally'
+	git config core.excludesfile ~/.gitignore
+}
+
+function generateSshKey {
+	display '🔑  Generating ssh key'
+	.scripts/ssh.sh
+}
+
+function scheduleCron {
+	display '📅  Scheduling crontab tasks'
+	crontab .scripts/cron.txt
+}
+
+function restartComputer {
+	display '🖥  All done! You may need to restart your computer'
+	.scripts/restart.sh
+}
+
+function runAll {
+	createDirectories
+	stowFiles
+	source ~/.zshrc
+	installApps
+	# installNpm
+	# installCustomApps
+	setupMacOsPref
+	loginItems
+	applyGitIgnore
+	# generateSshKey
+	scheduleCron
+	restartComputer
+}
+
+function menu {
+	echo -e "usage:"
+	echo -e "	./up apps - install apps"
+	echo -e "	./up custom - install custom apps with nativefier"
+	echo -e "	./up stow - stow files"
+	echo -e "	./up all - run all commands"
+}
+
+cat banner
+
+case $1 in
+	apps )
+		installApps
+		;;
+	custom )
+		installCustomApps
+		;;
+	stow )
+		stowFiles
+		;;
+	all )
+		runAll
+		;;
+	help )
+		menu
+		;;
+	* )
+		menu
+		;;
+esac
